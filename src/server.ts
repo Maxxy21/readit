@@ -1,20 +1,61 @@
-import { AppDataSource } from "./data-source"
-import { User } from "./entity/User"
+import "reflect-metadata"
 
-AppDataSource.initialize().then(async () => {
+import {AppDataSource} from "./data-source"
+import User from "./entities/User"
+import express from "express"
+import morgan from "morgan";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
-    console.log("Inserting a new user into the database...")
-    const user = new User()
-    user.firstName = "Timber"
-    user.lastName = "Saw"
-    user.age = 25
-    await AppDataSource.manager.save(user)
-    console.log("Saved a new user with id: " + user.id)
+dotenv.config()
 
-    console.log("Loading users from the database...")
-    const users = await AppDataSource.manager.find(User)
-    console.log("Loaded users: ", users)
 
-    console.log("Here you can setup and run express / fastify / any other framework.")
+import authRoutes from "./routes/auth";
+import postRoutes from "./routes/posts";
 
-}).catch(error => console.log(error))
+import trim from "./middleware/trim";
+
+
+const app = express()
+const PORT = process.env.PORT || 5000
+
+app.use(express.json())
+app.use(morgan("dev"))
+app.use(trim)
+app.use(cookieParser())
+
+app.get('/', (_, res) => res.send('Hello World'))
+
+app.use("/api/auth", authRoutes);
+app.use("/api/posts", postRoutes);
+
+
+app.listen(PORT, async () => {
+    console.log(`Server running on http://localhost:${PORT}`)
+
+    try {
+        await AppDataSource.initialize()
+        console.log("Database connected")
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+// AppDataSource.initialize().then(async () => {
+//
+//     console.log("Inserting a new user into the database...")
+//     const user = new User()
+//     user.firstName = "Timber"
+//     user.lastName = "Saw"
+//     user.age = 25
+//     await AppDataSource.manager.save(user)
+//     console.log("Saved a new user with id: " + user.id)
+//
+//     console.log("Loading users from the database...")
+//     const users = await AppDataSource.manager.find(User)
+//     console.log("Loaded users: ", users)
+//
+//     console.log("Here you can setup and run express / fastify / any other framework.")
+//
+// }).catch(error => console.log(error))
