@@ -96,6 +96,7 @@ const commentOnPost = async (req: Request, res: Response) => {
         await comment.save()
 
         res.json(comment)
+
     } catch (err) {
         console.log(err)
         res.status(404).json({error: 'Post not found'})
