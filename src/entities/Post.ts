@@ -1,16 +1,14 @@
 import {
     Entity as TOEntity,
-    PrimaryGeneratedColumn,
     Column,
-    BaseEntity,
     Index,
-    CreateDateColumn,
-    UpdateDateColumn,
-    BeforeInsert, ManyToOne, JoinColumn,
+    BeforeInsert, ManyToOne, JoinColumn, OneToMany,
 } from 'typeorm'
-import bcrypt from 'bcrypt'
 import Entity from "./Entity";
 import User from "./User";
+import {makeId, slugify} from "../util/helpers";
+import Sub from "./Sub";
+import Comment from "./Comment";
 
 @TOEntity('posts')
 export default class Post extends Entity {
@@ -21,7 +19,7 @@ export default class Post extends Entity {
 
     @Index()
     @Column()
-    identifier: string // 7 character id
+    identifier: string
 
     @Column()
     title: string
@@ -39,5 +37,19 @@ export default class Post extends Entity {
     @ManyToOne(() => User, user => user.posts)
     @JoinColumn({name: 'username', referencedColumnName: 'username'})
     user: User
+
+    @ManyToOne(() => Sub, sub => sub.posts)
+    @JoinColumn({name: 'subName', referencedColumnName: 'name'})
+    sub: Sub
+
+    @OneToMany(() => Comment, comment => comment.post)
+    comments: Comment[]
+
+
+    @BeforeInsert()
+    makeIdAndSlug() {
+        this.identifier = makeId(7)
+        this.slug = slugify(this.title)
+    }
 
 }

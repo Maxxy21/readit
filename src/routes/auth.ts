@@ -22,7 +22,7 @@ const register = async (req: Request, res: Response) => {
 
         const usernameUser = await User.findOne({
             where: {
-                email: email,
+                username: username,
             },
         })
 
@@ -30,22 +30,23 @@ const register = async (req: Request, res: Response) => {
         if (usernameUser) errors.username = 'Username is already taken'
 
         if (Object.keys(errors).length > 0) {
-            return res.status(400).json(errors)
+            res.status(400).json(errors)
         }
 
 
         const user = new User({email, username, password})
 
         errors = await validate(user)
-        if (errors.length > 0) return res.status(400).json({errors})
+        if (errors.length > 0) {
+            res.status(400).json({errors})
+        }
 
         await user.save()
-
-
         res.json(user)
+
     } catch (err) {
         console.log(err)
-        return res.status(500).json(err)
+        res.status(500).json(err)
     }
 }
 
@@ -58,6 +59,7 @@ const login = async (req: Request, res: Response) => {
 
         if (isEmpty(username)) errors.username = 'Username must not be empty'
         if (isEmpty(password)) errors.password = 'Password must not be empty'
+
         if (Object.keys(errors).length > 0) {
             res.status(400).json(errors)
         }
@@ -95,9 +97,9 @@ const login = async (req: Request, res: Response) => {
 
 
     } catch (err) {
-
+        console.log(err)
+        res.status(500).json({error: 'Something went wrong'})
     }
-
 }
 
 const me = async (_: Request, res: Response) => {
