@@ -1,22 +1,36 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import type {Metadata} from 'next'
+import {IBM_Plex_Sans} from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
+
+const ibmPlexSans = IBM_Plex_Sans(
+    {
+        weight: ['100', '200', '300', '400', '500', '600'],
+        subsets: ['latin'],
+        display: 'swap',
+        variable: '--font-ibm-plex-sans',
+
+    })
+
 
 export const metadata: Metadata = {
-  title: 'Readit',
-  description: 'A Reddit clone built with Next.js and Tailwind CSS.',
+    title: 'Readit: The front page of the internet',
 }
 
+// Axios.defaults.baseURL = 'http://localhost:5000/api';
+
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
+                                       children,
+                                   }: {
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="en" className={`${ibmPlexSans.variable}`}>
+        <body className="font-ibmPlexSans" style={{backgroundColor:'#DAE0E6'}}>{children}</body>
+        </html>
+    )
 }
