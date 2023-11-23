@@ -21,8 +21,6 @@ export const metadata: Metadata = {
     title: 'Readit: The front page of the internet',
 }
 
-// Axios.defaults.baseURL = 'http://localhost:5000/api';
-
 export default function RootLayout({
                                        children,
                                    }: {

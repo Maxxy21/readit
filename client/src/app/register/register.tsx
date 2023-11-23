@@ -42,7 +42,7 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="flex">
+        <div className="flex bg-white">
             <div className="w-36 h-screen bg-cover bg-center" style={{backgroundImage: "url('/images/bricks.jpg')"}}>
             </div>
             <div className="flex flex-col justify-center pl-6">
