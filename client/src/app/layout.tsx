@@ -29,6 +29,7 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${ibmPlexSans.variable}`}>
         <body className="font-ibmPlexSans" style={{backgroundColor:'#DAE0E6'}}>{children}</body>
+
         </html>
     )
 }

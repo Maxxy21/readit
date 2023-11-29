@@ -8,6 +8,12 @@ import cookie from 'cookie'
 import User from '../entities/User'
 import auth from '../middleware/auth'
 
+const mapErrors = (errors: Object[]) => {
+    return errors.reduce((prev: any, err: any) => {
+        prev[err.property] = Object.entries(err.constraints)[0][1]
+        return prev
+    }, {})
+}
 const register = async (req: Request, res: Response) => {
     const {email, username, password} = req.body
 
@@ -30,7 +36,7 @@ const register = async (req: Request, res: Response) => {
         if (usernameUser) errors.username = 'Username is already taken'
 
         if (Object.keys(errors).length > 0) {
-            res.status(400).json(errors)
+            return res.status(400).json(errors)
         }
 
 
@@ -38,15 +44,17 @@ const register = async (req: Request, res: Response) => {
 
         errors = await validate(user)
         if (errors.length > 0) {
-            res.status(400).json({errors})
+            return res.status(400).json(mapErrors(errors))
+
         }
 
+
         await user.save()
-        res.json(user)
+        return res.json(user)
 
     } catch (err) {
         console.log(err)
-        res.status(500).json(err)
+        return res.status(500).json(err)
     }
 }
 
@@ -61,7 +69,7 @@ const login = async (req: Request, res: Response) => {
         if (isEmpty(password)) errors.password = 'Password must not be empty'
 
         if (Object.keys(errors).length > 0) {
-            res.status(400).json(errors)
+            return res.status(400).json(errors)
         }
 
         const user = await User.findOne(
@@ -72,13 +80,13 @@ const login = async (req: Request, res: Response) => {
             });
 
         if (!user) {
-            res.status(404).json({error: 'User not found'})
+            return res.status(404).json({error: 'User not found'})
         }
 
         const passwordMatches = await bycrypt.compare(password, user.password)
 
         if (!passwordMatches) {
-            res.status(401).json({password: 'Password is incorrect'})
+            return res.status(401).json({password: 'Password is incorrect'})
         }
 
         const token = jwt.sign({username}, process.env.JWT_SECRET!)
@@ -93,12 +101,12 @@ const login = async (req: Request, res: Response) => {
             })
         )
 
-        res.json({user})
+        return res.json({user})
 
 
     } catch (err) {
         console.log(err)
-        res.status(500).json({error: 'Something went wrong'})
+        return res.status(500).json({error: 'Something went wrong'})
     }
 }
 

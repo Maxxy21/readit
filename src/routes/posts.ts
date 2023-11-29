@@ -43,11 +43,11 @@ const getPosts = async (_: Request, res: Response) => {
             }
         )
 
-        res.json(posts)
+        return res.json(posts)
 
     } catch (err) {
         console.log(err)
-        res.status(500).json({error: 'Something went wrong'})
+        return res.status(500).json({error: 'Something went wrong'})
     }
 }
 
@@ -65,11 +65,11 @@ const getPost = async (req: Request, res: Response) => {
             }
         )
 
-        res.json(post)
+        return res.json(post)
 
     } catch (err) {
         console.log(err)
-        res.status(404).json({error: 'Post not found'})
+        return res.status(404).json({error: 'Post not found'})
     }
 }
 
@@ -95,11 +95,11 @@ const commentOnPost = async (req: Request, res: Response) => {
 
         await comment.save()
 
-        res.json(comment)
+        return res.json(comment)
 
     } catch (err) {
         console.log(err)
-        res.status(404).json({error: 'Post not found'})
+        return res.status(404).json({error: 'Post not found'})
     }
 
 }

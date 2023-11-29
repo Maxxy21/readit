@@ -32,17 +32,17 @@ const createSub = async (req: Request, res: Response) => {
         }
 
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
 
     try {
         const sub = new Sub({name, description, title, user})
         await sub.save()
 
-       res.json(sub)
+        return res.json(sub)
     } catch (err) {
         console.log(err)
-        res.status(500).json({error: 'Something went wrong'})
+        return res.status(500).json({error: 'Something went wrong'})
     }
 }
 
