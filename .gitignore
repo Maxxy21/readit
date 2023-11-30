@@ -8,4 +8,5 @@ temp/
 
 /.env
 
-.env
+# local env files
+.env*.local
