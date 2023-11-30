@@ -1,16 +1,17 @@
-import {Entity as TOEntity, Column, ManyToOne, JoinColumn, BeforeInsert, Index} from 'typeorm'
+import {Entity as TOEntity, Column, ManyToOne, JoinColumn, BeforeInsert, Index, OneToMany} from 'typeorm'
 import Entity from "./Entity";
 
 import {makeId} from "../util/helpers";
 // import {Expose} from "class-transformer";
 import User from "./User";
 import Post from "./Post";
-
+import Vote from "./Vote";
+import {Exclude} from "class-transformer";
 
 
 @TOEntity('comments')
 export default class Comment extends Entity {
-    constructor(comment: Partial<Comment>) {
+    constructor(comment?: Partial<Comment>) {
         super()
         Object.assign(this, comment)
     }
@@ -32,18 +33,20 @@ export default class Comment extends Entity {
     @ManyToOne(() => Post, post => post.comments, {nullable: false})
     post: Post
 
-    // @OneToMany(() => Vote, vote => vote.comment)
-    // votes: Vote[]
+    @Exclude()
+    @OneToMany(() => Vote, vote => vote.comment)
+    votes: Vote[]
+
 
     // @Expose() get voteScore(): number {
     //     return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0)
     // }
 
-    // protected userVote: number
-    // setUserVote(user: User) {
-    //     const index = this.votes?.findIndex(v => v.username === user.username)
-    //     this.userVote = index > -1 ? this.votes[index].value : 0
-    // }
+    protected userVote: number
+    setUserVote(user: User) {
+        const index = this.votes?.findIndex(v => v.username === user.username)
+        this.userVote = index > -1 ? this.votes[index].value : 0
+    }
 
     @BeforeInsert()
     makeIdAndSlug() {

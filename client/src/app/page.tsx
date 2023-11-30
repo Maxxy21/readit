@@ -14,10 +14,10 @@ dayjs.extend(relativeTime)
 async function getPosts() {
     const res = await fetch('http://localhost:5000/api/posts', {
         method: 'GET',
+        cache: 'no-store',
 
-    })
+    },)
     if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')
     }
 
@@ -26,21 +26,6 @@ async function getPosts() {
 
 const Home = async () => {
     const posts: Post[] = await getPosts()
-    // const [posts, setPosts] = useState<Post[]>([])
-    //
-    // // useEffect(() => {
-    // //     fetch('http://localhost:5000/api/posts', {
-    // //         method: 'GET',
-    // //     })
-    // //         .then(res => res.json()) // Convert the response to JSON
-    // //         .then(data => setPosts(data)) // Assuming the JSON object is the array of posts
-    // //         .catch(err => console.log(err))
-    // //
-    // //
-    // // }, [])
-    //
-    // setPosts(data)
-
 
     return (
         <>
