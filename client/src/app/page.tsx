@@ -13,9 +13,10 @@ dayjs.extend(relativeTime)
 async function getPosts() {
     const res = await fetch('http://localhost:5000/api/posts', {
         method: 'GET',
+        credentials: 'include',
         cache: 'no-store',
 
-    },)
+    })
     if (!res.ok) {
         throw new Error('Failed to fetch data')
     }

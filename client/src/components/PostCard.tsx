@@ -1,10 +1,18 @@
+'use client';
+
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faMessage, faShare} from "@fortawesome/free-solid-svg-icons";
+import relativeTime from "dayjs/plugin/relativeTime";
+import classNames from "classnames";
+
 import {Post} from "@/types";
-import React from "react";
+import ActionButton from "@/components/ActionButton";
+
+dayjs.extend(relativeTime)
 
 
 interface PostCardProps {
@@ -12,17 +20,48 @@ interface PostCardProps {
 
 }
 
-const PostCard: React.FC<PostCardProps> = ({post}) => {
+const PostCard = ({post: {identifier, voteScore, slug, title, body, subName, createdAt, userVote, commentCount, url, username}}: PostCardProps) => {
+
+    const vote = async (value: number) => {
+        const res = await fetch('http://localhost:5000/api/misc/vote', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            body: JSON.stringify({identifier: identifier, slug: slug, value: value})
+        })
+        if (!res.ok) {
+            throw new Error('Failed to post data')
+        }
+
+        console.log(res.json())
+
+    }
+
+
     return (
-        <div key={post.identifier} className="flex mb-4 bg-white rounded">
+        <div key={identifier} className="flex mb-4 bg-white rounded">
             {/*Vote section*/}
-            <div className="w-10 text-center bg-gray-200 rounded-l">
-                <p>V</p>
+            <div className="w-10 py-3 text-center bg-gray-200 rounded-l">
+                {/*Upvote*/}
+                <div className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                     onClick={() => vote(1)}>
+                    <i className={classNames('icon-arrow-up', {
+                        'text-red-500': userVote === 1
+                    })}/>
+                </div>
+                <p className="text-xs font-bold">{voteScore}</p>
+                {/*Downvote*/}
+                <div className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600"
+                     onClick={() => vote(-1)}>
+                    <i className={classNames('icon-arrow-down', {
+                        'text-blue-600': userVote === -1
+                    })}/>
+                </div>
             </div>
             {/*Post data section*/}
             <div className="w-full p-2">
                 <div className="flex items-center">
-                    <Link href={`/r/${post.subName}`}>
+                    <Link href={`/r/${subName}`}>
                         <Image
                             src="https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg"
                             className="w-6 h-6 mr-1 rounded-full cursor-pointer"
@@ -33,52 +72,49 @@ const PostCard: React.FC<PostCardProps> = ({post}) => {
                         />
 
                     </Link>
-                    <Link href={`/r/${post.subName}`}
+                    <Link href={`/r/${subName}`}
                           className="text-xs font-bold cursor-pointer hover:underline">
-                        /r/{post.subName}
+                        /r/{subName}
                     </Link>
                     <p className="text-xs text-gray-500">
                         <span className="mx-1">•</span>
                         Posted by
-                        <Link href={`/r/${post.username}`} className="mx-1 hover:underline">
-                            /u/{post.username}
+                        <Link href={`/r/${username}`} className="mx-1 hover:underline">
+                            /u/{username}
                         </Link>
-                        <Link href={post.url} className="mx-1 hover:underline">
-                            {dayjs(post.createdAt).fromNow()}
+                        <Link href={url} className="mx-1 hover:underline">
+                            {dayjs(createdAt).fromNow()}
                         </Link>
                     </p>
                 </div>
                 {/*Post title*/}
-                <Link href={post.url} className="my-1 text-lg font-medium">
-                    {post.title}
+                <Link href={url} className="my-1 text-lg font-medium">
+                    {title}
                 </Link>
                 {/*Post body*/}
-                {post.body && <p className="my-1 text-sm">{post.body}</p>}
+                {body && <p className="my-1 text-sm">{body}</p>}
                 {/*Actions*/}
                 <div className="flex">
-                    <Link href={post.url}>
-                        <div
-                            className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+                    <Link href={url}>
+                        <ActionButton>
                             <FontAwesomeIcon
                                 icon={faMessage}
                                 className="mr-1 text-gray-500"/>
-                            <span className="font-bold">{"20"} Comments</span>
-                        </div>
+                            <span className="font-bold">{commentCount} Comments</span>
+                        </ActionButton>
                     </Link>
-                    <div
-                        className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+                    <ActionButton>
                         <FontAwesomeIcon
                             icon={faShare}
                             className="mr-1"/>
                         <span className="font-bold">Share</span>
-                    </div>
-                    <div
-                        className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
+                    </ActionButton>
+                    <ActionButton>
                         <FontAwesomeIcon
                             icon={faBookmark}
                             className="mr-1"/>
                         <span className="font-bold">Save</span>
-                    </div>
+                    </ActionButton>
                 </div>
 
             </div>

@@ -11,7 +11,7 @@ interface InputGroupProps {
 
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({className, type, placeholder, value, error, setValue}) => {
+const InputGroup = ({className, type, placeholder, value, error, setValue}: InputGroupProps) => {
     return (
         <div className={className}>
             <input

@@ -1,25 +1,15 @@
 import {Request, Response, NextFunction} from "express";
 
 import User from "../entities/User";
-import jwt from "jsonwebtoken";
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (_: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.cookies.token
-        if (!token) throw new Error('Unauthenticated')
-        const {username}: any = jwt.verify(token, process.env.JWT_SECRET!)
-        const user = await User.findOne(
-            {
-                where: {
-                    username: username
-                }
-            });
-        if (!user) throw new Error('Unauthenticated')
+        const user: User | undefined = res.locals.user
+        if (!user) throw new Error('Hey, you are not authenticated!')
 
-        res.locals.user = user
-        next()
+        return next()
     } catch (err) {
         console.log(err)
-        res.status(401).json({error: 'Unauthenticated'})
+        return res.status(401).json({error: 'Unauthenticated'})
     }
 }
