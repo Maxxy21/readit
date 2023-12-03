@@ -19,6 +19,6 @@ export const slugify = (str: string): string => {
 
     return str
         .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-') // collapse dashes
+        .replace(/\s+/g, '_') // collapse whitespace and replace by -
+        .replace(/-+/g, '_') // collapse dashes
 }
