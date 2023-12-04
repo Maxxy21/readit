@@ -11,6 +11,7 @@ import classNames from "classnames";
 
 import {Post} from "@/types";
 import ActionButton from "@/components/ActionButton";
+import axiosInstance from "@/lib/axios";
 
 dayjs.extend(relativeTime)
 
@@ -22,21 +23,19 @@ interface PostCardProps {
 
 const PostCard = ({post: {identifier, voteScore, slug, title, body, subName, createdAt, userVote, commentCount, url, username}}: PostCardProps) => {
 
+
     const vote = async (value: number) => {
-        const res = await fetch('http://localhost:5000/api/misc/vote', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-            body: JSON.stringify({identifier: identifier, slug: slug, value: value})
-        })
-        if (!res.ok) {
-            throw new Error('Failed to post data')
+        try {
+            await axiosInstance.post('/misc/vote', {
+                identifier,
+                slug,
+                value,
+            })
+        } catch (err: any) {
+            throw err.response.data
         }
 
-        console.log(res.json())
-
     }
-
 
     return (
         <div key={identifier} className="flex mb-4 bg-white rounded">

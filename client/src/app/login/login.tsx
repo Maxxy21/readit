@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import React, {FormEvent, useState} from "react";
-import Axios from "axios";
 import {useRouter} from 'next/navigation'
+import axiosInstance from "@/lib/axios";
 
 
 import InputGroup from "@/components/InputGroup";
+import Axios from "axios";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
@@ -18,17 +19,13 @@ const LoginPage = () => {
     const submitForm = async (event: FormEvent) => {
         event.preventDefault()
 
-
         try {
-            await fetch('http://localhost:5000/api/auth/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
+            await axiosInstance.post('/auth/login', {
+                username,
+                password,
             })
 
             router.push('/')
-
         } catch (err: any) {
             setErrors(err.response.data)
         }

@@ -1,8 +1,7 @@
-import Link from "next/link";
-import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
+import axiosInstance from "@/lib/axios";
 import {Post} from "@/types";
 import Navbar from "@/components/Navbar";
 import PostCard from "@/components/PostCard";
@@ -11,17 +10,13 @@ dayjs.extend(relativeTime)
 
 
 async function getPosts() {
-    const res = await fetch('http://localhost:5000/api/posts', {
-        method: 'GET',
-        credentials: 'include',
-        cache: 'no-store',
-
-    })
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
+    try {
+        const res = await axiosInstance.get('/posts')
+        return res.data
+    } catch (err: any) {
+        throw err.response.data
     }
 
-    return res.json()
 }
 
 const Home = async () => {

@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import React, {FormEvent, useState} from "react";
-import Axios from "axios";
 import {useRouter} from 'next/navigation'
 
 
 import InputGroup from "@/components/InputGroup";
+import axiosInstance from "@/lib/axios";
 
 const RegisterPage = () => {
     const [email, setEmail] = useState('')
@@ -26,13 +26,11 @@ const RegisterPage = () => {
         }
 
         try {
-            await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, username, password}),
-                credentials: 'include'
+            await axiosInstance.post('/auth/register', {
+                email,
+                password,
+                username,
             })
-
             router.push('/login')
 
         } catch (err: any) {

@@ -4,7 +4,9 @@ import '../styles/globals.css'
 import '../styles/icons.css'
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
+import {config} from "@fortawesome/fontawesome-svg-core";
+
+
 config.autoAddCss = false;
 
 
@@ -29,7 +31,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className={`${ibmPlexSans.variable}`}>
-        <body className="font-ibmPlexSans" style={{backgroundColor:'#DAE0E6'}}>{children}</body>
+        <body className="font-ibmPlexSans" style={{backgroundColor: '#DAE0E6'}}>
+        <>
+            {children}
+        </>
+        </body>
 
         </html>
     )
