@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import LoginPage from "../../components/login";
+import LoginForm from "../../components/LoginForm"
 
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const Login = () => {
     return (
         <>
-            <LoginPage/>
+            <LoginForm/>
         </>
     );
 }

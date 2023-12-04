@@ -6,7 +6,7 @@ interface InputGroupProps {
     type: string
     placeholder: string
     value: string
-    error: string | undefined
+    error?: string | undefined
     setValue: (str: string) => void
 
 }

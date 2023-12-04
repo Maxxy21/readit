@@ -1,5 +1,6 @@
 import {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import axiosInstance from "@/lib/axios";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -10,16 +11,15 @@ export const authOptions: NextAuthOptions = {
                 password: {label: "Password", type: "password"}
             },
             async authorize(credentials, req) {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(credentials)
-                });
-                const data = await res.json();
-                if (data.error) {
-                    throw new Error(data.error);
+                const res = await axiosInstance.post('/auth/login', {
+                    username: credentials?.username,
+                    password: credentials?.password
+                })
+                const user = await res.data;
+                if (user) {
+                    return user;
                 } else {
-                    return data;
+                    return null;
                 }
             }
         })
@@ -29,6 +29,6 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: "/login"
+        signIn: "/login",
     },
 }

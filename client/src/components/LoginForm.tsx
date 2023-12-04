@@ -3,16 +3,15 @@
 import Link from "next/link";
 import React, {FormEvent, useState} from "react";
 import {useRouter} from 'next/navigation'
-import axiosInstance from "@/lib/axios";
 
 
 import InputGroup from "@/components/InputGroup";
-import Axios from "axios";
+import {signIn} from "next-auth/react";
 
-const LoginPage = () => {
+const LoginForm = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [errors, setErrors] = useState<any>({})
+    const [errors, setErrors] = useState("")
 
     const router = useRouter()
 
@@ -20,14 +19,20 @@ const LoginPage = () => {
         event.preventDefault()
 
         try {
-            await axiosInstance.post('/auth/login', {
-                username,
-                password,
-            })
+            const res = await signIn('credentials', {
+                username: username,
+                password: password,
+                redirect: false,
 
+            })
+            if (res?.error) {
+                console.log(res.error)
+                setErrors("Password or username is incorrect")
+                return
+            }
             router.push('/')
-        } catch (err: any) {
-            setErrors(err.response.data)
+        } catch (err) {
+            console.log(err)
         }
 
     }
@@ -48,14 +53,13 @@ const LoginPage = () => {
                             type="text"
                             placeholder="Username"
                             value={username}
-                            error={errors.username}
                             setValue={setUsername}/>
                         <InputGroup
                             className="mb-2"
                             type="password"
                             placeholder="Password"
                             value={password}
-                            error={errors.password}
+                            error={errors}
                             setValue={setPassword}/>
                         <button
                             className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded">
@@ -64,7 +68,7 @@ const LoginPage = () => {
                     </form>
                     <small>
                         New to readit?
-                        <Link className="ml-1 text-blue-500 uppercase" href="/client/src/components/RegisterForm">
+                        <Link className="ml-1 text-blue-500 uppercase" href="/register">
                             Sign Up
                         </Link>
                     </small>
@@ -75,4 +79,4 @@ const LoginPage = () => {
     );
 }
 
-export default LoginPage;
+export default LoginForm;

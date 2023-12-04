@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import RegisterPage from "../../components/RegisterForm";
+import RegisterForm from "../../components/RegisterForm";
 
 
 
@@ -13,7 +13,7 @@ const Register = () => {
 
     return (
         <>
-            <RegisterPage/>
+            <RegisterForm/>
         </>
 
     );

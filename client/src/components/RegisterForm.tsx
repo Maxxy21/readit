@@ -8,7 +8,7 @@ import {useRouter} from 'next/navigation'
 import InputGroup from "@/components/InputGroup";
 import axiosInstance from "@/lib/axios";
 
-const RegisterPage = () => {
+const RegisterForm = () => {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -102,4 +102,4 @@ const RegisterPage = () => {
     );
 }
 
-export default RegisterPage;
+export default RegisterForm

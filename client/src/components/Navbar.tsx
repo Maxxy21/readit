@@ -3,8 +3,11 @@ import Images from "next/image";
 import RedditLogo from "@/images/reddit.svg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {useSession} from "next-auth/react";
 
 const Navbar = () => {
+    const { data: session } = useSession()
+
     return (
         <div className=" bg-white fixed inset-x-0 top-0 z-0 flex items-center justify-center h-12 px-5">
             <div className="flex items-center">
