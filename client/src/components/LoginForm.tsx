@@ -64,7 +64,7 @@ const LoginPage = () => {
                     </form>
                     <small>
                         New to readit?
-                        <Link className="ml-1 text-blue-500 uppercase" href="/register">
+                        <Link className="ml-1 text-blue-500 uppercase" href="/client/src/components/RegisterForm">
                             Sign Up
                         </Link>
                     </small>

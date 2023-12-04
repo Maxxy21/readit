@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import RegisterPage from "./register";
+import RegisterPage from "../../components/RegisterForm";
 
 
 

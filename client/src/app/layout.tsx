@@ -5,6 +5,8 @@ import '../styles/icons.css'
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import {config} from "@fortawesome/fontawesome-svg-core";
+import AuthProviderProvider from "@/app/providers/authProvider";
+
 
 
 config.autoAddCss = false;
@@ -32,9 +34,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${ibmPlexSans.variable}`}>
         <body className="font-ibmPlexSans" style={{backgroundColor: '#DAE0E6'}}>
-        <>
+        <AuthProviderProvider>
             {children}
-        </>
+        </AuthProviderProvider>
         </body>
 
         </html>

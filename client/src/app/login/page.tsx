@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import LoginPage from "./login";
+import LoginPage from "../../components/login";
 
 
 export const metadata: Metadata = {
