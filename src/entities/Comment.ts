@@ -2,7 +2,7 @@ import {Entity as TOEntity, Column, ManyToOne, JoinColumn, BeforeInsert, Index, 
 import Entity from "./Entity";
 
 import {makeId} from "../util/helpers";
-// import {Expose} from "class-transformer";
+
 import User from "./User";
 import Post from "./Post";
 import Vote from "./Vote";

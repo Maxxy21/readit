@@ -5,8 +5,8 @@ import '../styles/icons.css'
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import {config} from "@fortawesome/fontawesome-svg-core";
-import AuthProviderProvider from "@/app/providers/authProvider";
 
+import {AuthProvider} from "@/context/auth";
 
 
 config.autoAddCss = false;
@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     title: 'Readit: The front page of the internet',
 }
 
+
 export default function RootLayout({
                                        children,
                                    }: {
@@ -34,9 +35,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${ibmPlexSans.variable}`}>
         <body className="font-ibmPlexSans" style={{backgroundColor: '#DAE0E6'}}>
-        <AuthProviderProvider>
+        <AuthProvider>
             {children}
-        </AuthProviderProvider>
+        </AuthProvider>
         </body>
 
         </html>

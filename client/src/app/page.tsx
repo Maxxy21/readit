@@ -13,8 +13,8 @@ async function getPosts() {
     try {
         const res = await axiosInstance.get('/posts')
         return res.data
-    } catch (err: any) {
-        throw err.response.data
+    } catch (err) {
+        console.log(err)
     }
 
 }

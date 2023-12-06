@@ -1,12 +1,27 @@
+'use client'
+
 import Link from "next/link";
 import Images from "next/image";
 import RedditLogo from "@/images/reddit.svg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {useSession} from "next-auth/react";
+import {useAuthState, useAuthDispatch} from "@/context/auth";
+import axiosInstance from "@/lib/axios";
 
 const Navbar = () => {
-    const { data: session } = useSession()
+    const {authenticated, loading} = useAuthState()
+
+    const dispatch = useAuthDispatch()
+    const logout = () => {
+        axiosInstance.get('/auth/logout').then(() => {
+            dispatch('LOGOUT')
+            window.location.reload()
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    // console.log(session)
 
     return (
         <div className=" bg-white fixed inset-x-0 top-0 z-0 flex items-center justify-center h-12 px-5">
@@ -31,12 +46,28 @@ const Navbar = () => {
                     placeholder="Search"/>
             </div>
             <div className="flex">
-                <Link className="w-32 py-1 mr-4 hollow blue button leading-5" href={'/login'}>
-                    Login
-                </Link>
-                <Link className="w-32 py-1 blue button leading-5" href={'/register'}>
-                    Sign Up
-                </Link>
+                {!loading
+                    && (authenticated ? (
+                            <button
+                                className="w-32 py-1 mr-4 hollow blue button leading-5"
+                                onClick={logout}
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <>
+                                <Link className="w-32 py-1 mr-4 hollow blue button leading-5" href={'/login'}>
+                                    Login
+                                </Link>
+                                <Link className="w-32 py-1 blue button leading-5" href={'/register'}>
+                                    Sign Up
+                                </Link>
+                            </>
+                        )
+                    )
+                }
+
+
             </div>
         </div>
     )

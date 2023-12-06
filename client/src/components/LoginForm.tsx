@@ -3,36 +3,38 @@
 import Link from "next/link";
 import React, {FormEvent, useState} from "react";
 import {useRouter} from 'next/navigation'
+import axiosInstance from "@/lib/axios";
 
-
+import {useAuthDispatch,useAuthState} from "@/context/auth";
 import InputGroup from "@/components/InputGroup";
-import {signIn} from "next-auth/react";
 
-const LoginForm = () => {
+const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [errors, setErrors] = useState("")
+    const [errors, setErrors] = useState<any>({})
+
+
+    const dispatch = useAuthDispatch()
+    const {authenticated} = useAuthState()
 
     const router = useRouter()
+
+    if(authenticated) router.push('/')
 
     const submitForm = async (event: FormEvent) => {
         event.preventDefault()
 
         try {
-            const res = await signIn('credentials', {
-                username: username,
-                password: password,
-                redirect: false,
-
+            const res = await axiosInstance.post('/auth/login', {
+                username,
+                password,
             })
-            if (res?.error) {
-                console.log(res.error)
-                setErrors("Password or username is incorrect")
-                return
-            }
+
+            dispatch('LOGIN', res.data)
+
             router.push('/')
-        } catch (err) {
-            console.log(err)
+        } catch (err: any) {
+            setErrors(err.response.data)
         }
 
     }
@@ -53,13 +55,14 @@ const LoginForm = () => {
                             type="text"
                             placeholder="Username"
                             value={username}
+                            error={errors.username}
                             setValue={setUsername}/>
                         <InputGroup
                             className="mb-2"
                             type="password"
                             placeholder="Password"
                             value={password}
-                            error={errors}
+                            error={errors.password}
                             setValue={setPassword}/>
                         <button
                             className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded">
@@ -68,7 +71,7 @@ const LoginForm = () => {
                     </form>
                     <small>
                         New to readit?
-                        <Link className="ml-1 text-blue-500 uppercase" href="/register">
+                        <Link className="ml-1 text-blue-500 uppercase" href="/client/src/components/RegisterForm">
                             Sign Up
                         </Link>
                     </small>
@@ -79,4 +82,4 @@ const LoginForm = () => {
     );
 }
 
-export default LoginForm;
+export default LoginPage;
