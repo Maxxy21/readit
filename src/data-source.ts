@@ -6,7 +6,7 @@ dotenv.config()
 
 
 export const AppDataSource = new DataSource({
-    type: process.env.DB_TYPE  as any,
+    type: process.env.DB_TYPE as any,
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USERNAME,

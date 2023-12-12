@@ -6,6 +6,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown, faArrowUp, faBookmark, faMessage, faShare} from "@fortawesome/free-solid-svg-icons";
+import { FaBookmark } from "react-icons/fa";
 import relativeTime from "dayjs/plugin/relativeTime";
 import classNames from "classnames";
 
