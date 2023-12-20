@@ -115,6 +115,7 @@ export default class CreateData implements Seeder {
             },
             {
                 name: 'news',
+                title: 'News',
                 description: 'All the news, all the time.',
                 createdAt: timePlus(minute * 10),
                 updatedAt: timePlus(minute * 10),
@@ -122,6 +123,7 @@ export default class CreateData implements Seeder {
             },
             {
                 name: 'movies',
+                title: 'Movies',
                 description: 'Movie lovers, this is your place.',
                 createdAt: timePlus(minute * 15),
                 updatedAt: timePlus(minute * 15),
