@@ -10,7 +10,7 @@ import Vote from '../entities/Vote'
 
 
 function timePlus(duration = 0) {
-    const time = new Date('2020-11-07 07:01:43.18').getTime()
+    const time = new Date('2023-12-12 07:01:43.18').getTime()
 
     return new Date(time + duration).toISOString()
 }
