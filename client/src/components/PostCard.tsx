@@ -90,9 +90,7 @@ const PostCard = ({
                             alt="gravatar"
                             width={6}
                             height={6}
-
                         />
-
                     </Link>
                     <Link href={`/r/${subName}`}
                           className="text-xs font-bold cursor-pointer hover:underline">
