@@ -10,3 +10,4 @@ temp/
 
 # local env files
 .env*.local
+public/
