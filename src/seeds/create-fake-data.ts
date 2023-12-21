@@ -166,7 +166,7 @@ export default class CreateData implements Seeder {
                 identifier: 'IvzYvbG',
                 title: "What's your favourite React component library?",
                 slug: 'whats_your_favourite_react_component_library',
-                body: '(title) Mine is @material-ui',
+                body: 'Mine is @material-ui',
                 user: john,
                 sub: reactJsSub,
                 createdAt: timePlus(hour + minute * 30),

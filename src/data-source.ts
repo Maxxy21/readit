@@ -18,9 +18,7 @@ const options: DataSourceOptions & SeederOptions = {
     entities: ["src/entities/**/*.ts"],
     migrations: ["src/migrations/**/*.ts"],
     subscribers: ["src/subscriber/**/*.ts"],
-
-    seeds: ['src/seeds/**/*{.ts,.js}'],
-    factories: ['src/factories/**/*{.ts,.js}']
+    seeds: ["src/seeds/**/*.ts"],
 };
 
 export const AppDataSource = new DataSource(options);

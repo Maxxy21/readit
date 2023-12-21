@@ -1,26 +1,24 @@
+"use client"
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import axiosInstance from "@/lib/axios";
 import {Post} from "@/types";
 import Navbar from "@/components/Navbar";
 import PostCard from "@/components/PostCard";
+import useSWR from "swr";
+import fetcher from "@/lib/fetcher";
 
 dayjs.extend(relativeTime)
 
 
-async function getPosts() {
-    try {
-        const res = await axiosInstance.get('/posts')
-        return res.data
-    } catch (err) {
-        console.log(err)
-    }
+const Home = () => {
 
-}
-
-const Home = async () => {
-    const posts: Post[] = await getPosts()
+    const { data:posts } = useSWR<Post[]>(
+        `/posts`,
+        fetcher,
+        {dedupingInterval: 10000}
+    );
 
     return (
         <>
@@ -30,7 +28,7 @@ const Home = async () => {
                 <div className="container pt-4">
                     {/*Posts feed*/}
                     <div className="w-160">
-                        {posts.map(post => (
+                        {posts?.map((post: Post) => (
                             <PostCard post={post} key={post.identifier}/>
                         ))}
 

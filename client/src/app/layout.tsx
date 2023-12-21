@@ -1,5 +1,7 @@
 import type {Metadata} from 'next'
 import {IBM_Plex_Sans} from 'next/font/google'
+
+
 import '../styles/globals.css'
 import '../styles/icons.css'
 
@@ -35,9 +37,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${ibmPlexSans.variable}`}>
         <body className="font-ibmPlexSans" style={{backgroundColor: '#DAE0E6'}}>
-        <AuthProvider>
-            {children}
-        </AuthProvider>
+            <AuthProvider>
+                {children}
+            </AuthProvider>
         </body>
 
         </html>

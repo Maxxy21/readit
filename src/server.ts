@@ -16,7 +16,6 @@ import subRoutes from "./routes/subs";
 import miscRoutes from "./routes/misc";
 
 import trim from "./middleware/trim";
-import {runSeeders} from "typeorm-extension";
 
 
 const app = express()
@@ -45,7 +44,6 @@ app.listen(PORT, async () => {
 
     try {
         await AppDataSource.initialize();
-        await runSeeders(AppDataSource);
         console.log("Database connected")
     } catch (error) {
         console.log(error)
