@@ -1,23 +1,59 @@
 "use client";
-
+import React, {createRef, useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
-
 import useSWR from "swr";
+import classNames from "classnames";
+
 import {Sub} from "@/types";
 import PostCard from "@/components/PostCard";
 import fetcher from "@/lib/fetcher";
-import Head from "next/head";
+import {useAuthState} from "@/context/auth";
+
+
 import Image from "next/image";
+import axiosInstance from "@/lib/axios";
 
 
 const Subs = () => {
-
+    const [ownsSub, setOwnsSub] = React.useState(false)
+    const {authenticated, user} = useAuthState()
 
     const router = useRouter()
+    const fileInputRef = createRef<HTMLInputElement>()
     //get sub name from url
     const subName = usePathname().split('/')[2]
 
-    const {data: sub, error} = useSWR<Sub>(subName ? `/subs/${subName}` : null, fetcher)
+    const {data: sub, error, revalidate} = useSWR<Sub>(subName ? `/subs/${subName}` : null, fetcher)
+
+    useEffect(() => {
+        if (!sub) return
+        setOwnsSub(authenticated && user?.username === sub.username)
+    }, [sub])
+
+    const openFileInput = (type: string) => {
+        if (!ownsSub) return
+        fileInputRef.current.name = type
+        fileInputRef.current.click()
+    }
+
+    const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files[0]
+
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('type', fileInputRef.current.name)
+
+        try {
+            await axiosInstance.post<Sub>(`/subs/${sub.name}/image`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+            })
+
+            revalidate()
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
     if (error) {
         router.push('/')
@@ -39,10 +75,14 @@ const Subs = () => {
         <div className="pt-12">
             {sub && (
                 <>
+                    <input type="file" hidden={true} ref={fileInputRef} onChange={uploadImage}/>
                     {/*Sub info and images*/}
                     <div>
                         {/*Banner image*/}
-                        <div className="bg-blue-500">
+                        <div
+                            className={classNames("bg-blue-500", {"cursor-pointer": ownsSub})}
+                            onClick={() => openFileInput('banner')}
+                        >
                             {sub.bannerUrl ? (
                                 <div
                                     className="h-56 bg-blue-500"
@@ -64,9 +104,10 @@ const Subs = () => {
                                     <Image
                                         src={sub.imageUrl}
                                         alt="Sub"
-                                        width={70}
-                                        height={70}
-                                        className="w-20 h-20 rounded-full"
+                                        width={80}
+                                        height={80}
+                                        className={classNames("rounded-full", {"cursor-pointer": ownsSub})}
+                                        onClick={() => openFileInput('image')}
                                     />
                                 </div>
                                 <div className="pt-1 pl-24">
@@ -95,3 +136,4 @@ const Subs = () => {
 }
 
 export default Subs
+
