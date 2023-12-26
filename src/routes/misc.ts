@@ -7,9 +7,7 @@ import Comment from "../entities/Comment";
 
 import auth from "./../middleware/auth";
 import user from "../middleware/user";
-import {handleInput} from "concurrently/dist/src/defaults";
 import Sub from "../entities/Sub";
-import {getConnection} from "typeorm";
 import {AppDataSource} from "../data-source";
 
 const vote = async (req: Request, res: Response) => {

@@ -121,7 +121,7 @@ const Subs = () => {
                             </div>
                         </div>
                     </div>
-                    {/*Post & Sidebar*/}
+                    {/*Post & TopSubs*/}
                     <div className="container flex pt-5">
                         <div className="w-160">
                             {postsMarkup}
