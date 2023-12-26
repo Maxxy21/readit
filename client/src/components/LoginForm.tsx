@@ -32,7 +32,7 @@ const LoginPage = () => {
 
             dispatch('LOGIN', res.data)
 
-            router.push('/')
+            router.back()
         } catch (err: any) {
             setErrors(err.response.data)
         }

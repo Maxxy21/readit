@@ -12,6 +12,7 @@ import {useAuthState} from "@/context/auth";
 
 import Image from "next/image";
 import axiosInstance from "@/lib/axios";
+import Sidebar from "@/components/Sidebar";
 
 
 const Subs = () => {
@@ -126,7 +127,7 @@ const Subs = () => {
                         <div className="w-160">
                             {postsMarkup}
                         </div>
-
+                        <Sidebar sub={sub}/>
                     </div>
                 </>
             )}

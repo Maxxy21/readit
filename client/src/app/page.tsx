@@ -2,16 +2,17 @@
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-
-import {Post, Sub} from "@/types";
-import Navbar from "@/components/Navbar";
-import PostCard from "@/components/PostCard";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
-import Link from "next/link";
-import Image from "next/image";
 import React from "react";
+
+
+
+
+import {Post, Sub} from "@/types";
 import TopSubs from "@/components/TopSubs";
+import Navbar from "@/components/Navbar";
+import PostCard from "@/components/PostCard";
 
 dayjs.extend(relativeTime)
 
