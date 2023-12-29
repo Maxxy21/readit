@@ -49,3 +49,5 @@ export interface Comment {
     userVote: number
     voteScore: number
 }
+
+
