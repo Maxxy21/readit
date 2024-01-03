@@ -17,6 +17,8 @@ import ActionButton from "@/components/ActionButton";
 import axiosInstance from "@/lib/axios";
 import fetcher from "@/lib/fetcher";
 import Axios from "axios";
+import {useRouter} from "next/navigation";
+import {useAuthState} from "@/context/auth";
 
 
 dayjs.extend(relativeTime)
@@ -44,8 +46,11 @@ const PostCard = ({
                   }: PostCardProps) => {
 
 
+    const {authenticated} = useAuthState()
+    const router = useRouter()
 
     const vote = async (value: number) => {
+        if(!authenticated) router.push('/login')
         try {
             await axiosInstance.post('/misc/vote', {
                 identifier,

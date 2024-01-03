@@ -20,25 +20,12 @@ const Page = ({params}: Props) => {
 export const generateMetadata = async ({params}: Props): Promise<Metadata> => {
     const { identifier, slug } = params;
 
-    try {
-        const response = await axiosInstance.get(`/posts/${identifier}/${slug}`);
-        const post: Post = response.data; // Now expecting a single Post object
+    const response = await axiosInstance.get(`/posts/${identifier}/${slug}`);
+    const post: Post = response.data;
 
-        if (post && post.title) {
-            return {
-                title: post.title,
-            };
-        } else {
-            return {
-                title: "Post not found",
-            };
-        }
-    } catch (error) {
-        console.error("Error fetching post data:", error);
-        return {
-            title: "Error loading post title",
-        };
-    }
+    return {
+        title: post.title,
+    };
 };
 
 export default Page;
