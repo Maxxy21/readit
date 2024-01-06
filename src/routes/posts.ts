@@ -66,7 +66,7 @@ const getPost = async (req: Request, res: Response) => {
                     slug: slug,
                 },
                 order: {createdAt: 'DESC'},
-                relations: ['sub', 'votes'],
+                relations: ['sub', 'votes','comments'],
             }
         )
 
